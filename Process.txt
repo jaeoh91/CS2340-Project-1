@@ -1,0 +1,4 @@
+Session 1 - 1 Sep 2026
+- Goals: Setup env, familiarize with django, git??
+- I do have python3, but I will use a python package manager called uv to avoid conflicts with the system python (i use it for other extracurricular work)
+- UV installs python & required packages under a virtualenv(venv)
