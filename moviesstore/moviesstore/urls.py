@@ -19,5 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')), # need to connect app-level url declaration with project-level
+    # need to connect app-level url declaration with project-level
+    path('', include('home.urls')), 
+    path('movies/', include('movies.urls'))
 ]
