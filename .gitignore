@@ -8,3 +8,6 @@ wheels/
 
 # Virtual environments
 .venv
+
+.DS_Store
+moviesstore/moviesstore/static/.DS_Store

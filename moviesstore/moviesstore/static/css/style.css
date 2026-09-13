@@ -34,3 +34,21 @@
 .ms-footer-bottom a:hover {
   color: #fff;
 }
+
+.img-card-200 {
+  width: fit-content;
+  max-height: 200px;
+
+  /* added these to better fit content */
+  height: fit-content;
+  max-width: 200px;
+}
+
+.img-card-400 {
+  width: fit-content;
+  max-height: 400px;
+
+    /* added these to better fit content */
+  height: fit-content;
+  max-width: 400px;
+}
