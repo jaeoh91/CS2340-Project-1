@@ -1,4 +1,13 @@
 Session 1 - 1 Sep 2026
+Link:
 - Goals: Setup env, familiarize with django, git??
 - I do have python3, but I will use a python package manager called uv to avoid conflicts with the system python (i use it for other extracurricular work)
 - UV installs python & required packages under a virtualenv(venv)
+- Ended session w/ first commit to github
+
+Session 2 - 13 Sep 2026
+- Understood Django MVT framework & high-level architecture for moviesstore
+- Added home sub-app, mapped it to localhost:8000/
+- Added /home and /about pages
+- set up base html template
+- set up css stylesheet
