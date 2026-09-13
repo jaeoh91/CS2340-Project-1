@@ -21,3 +21,7 @@ Session 3 - 13 Sep 2026
 - commit 3: Migrate to MySQL
 - commit 4: user signup
     jaeoh91: pYdjyh-jipvur-qowgo8
+
+Session 4 - 
+- commit 5: Implement review functionality
+- commit 6: 
