@@ -13,4 +13,9 @@ Session 2 - 13 Sep 2026
 - set up css stylesheet
 
 Session 3 - 13 Sep 2026
-- Create movies app
+- commit 1: Create movies app
+- commit 2: Create movies model
+    - run this each time we edit model: 
+    ```python3 manage.py makemigrations
+    python3 manage.py migrate```
+- commit 3: Migrate to MySQL
