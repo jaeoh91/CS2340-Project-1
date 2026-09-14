@@ -25,3 +25,4 @@ Session 3 - 13 Sep 2026
 Session 4 - 
 - commit 5: Implement review functionality
 - commit 6: Implement cart system
+- commit 7: Implement purchase functionality
