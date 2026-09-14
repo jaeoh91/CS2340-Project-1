@@ -11,3 +11,11 @@ wheels/
 
 .DS_Store
 moviesstore/moviesstore/static/.DS_Store
+
+# Raw screen recording (136MB, over GitHub's 100MB limit) —
+# portfolio/img/demo_vid.mp4 is the compressed version actually used on the site.
+portfolio/img/demo_vid.mov
+
+# Working notes for continuing this project with Claude — not meant to be
+# published; keep locally.
+portfolio/HANDOFF.md

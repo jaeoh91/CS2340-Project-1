@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GT Movies Store — Jaesang Oh</title>
+  <meta name="description" content="How GT Movies Store was built: a Django storefront with reviews, a session cart and checkout, written for CS 2340 at Georgia Tech." />
+  <meta name="theme-color" content="#FFFFFF" />
+
+  <!-- Resolve the theme before first paint so the page never flashes. -->
+  <script>
+    (function () {
+      var t;
+      try { t = localStorage.getItem('theme'); } catch (e) { t = null; }
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="index.html" class="wordmark">Jaesang Oh</a>
+    <nav class="topnav" aria-label="Main">
+      <a href="index.html#about">About</a>
+      <a href="index.html#work">Work</a>
+      <button type="button" class="theme-toggle" aria-label="Switch to dark theme">
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <path d="M10 1.5a8.5 8.5 0 0 0 0 17z" fill="currentColor" />
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero wrap" id="top">
+    <h1 class="display">GT Movies<br />Store</h1>
+    <p class="lede">
+      A Django storefront for browsing films, reviewing them and buying them.
+      Built for CS 2340 over 4 sessions, then deployed.
+    </p>
+    <div class="actions">
+      <a class="btn btn-solid" href="https://jaeoh91.pythonanywhere.com" target="_blank" rel="noopener">Open the live app</a>
+      <a class="btn btn-line" href="https://github.com/jaeoh91/CS2340-Project-1" target="_blank" rel="noopener">Read the source</a>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <section class="row" id="overview">
+      <div class="rail"><h2>Overview</h2></div>
+      <div class="content prose">
+        <p>
+          The store follows Django's model–view–template structure, split into 4
+          apps: <code>home</code> for the landing and about pages, <code>movies</code>
+          for the catalogue and reviews, <code>accounts</code> for sign-up and order
+          history, and <code>cart</code> for the session cart and checkout.
+        </p>
+        <p>
+          Authentication uses Django's built-in auth rather than a hand-rolled one,
+          which keeps password hashing and session handling out of my code. The cart
+          lives in the session, so it survives navigation without needing a row in the
+          database until an order is actually placed.
+        </p>
+
+        <dl class="specs">
+          <div>
+            <dt>Course</dt>
+            <dd>CS 2340, Objects &amp; Design</dd>
+          </div>
+          <div>
+            <dt>Framework</dt>
+            <dd>Django 5.0 on Python 3</dd>
+          </div>
+          <div>
+            <dt>Interface</dt>
+            <dd>Django templates with Bootstrap 5</dd>
+          </div>
+          <div>
+            <dt>Database</dt>
+            <dd>SQLite</dd>
+          </div>
+          <div>
+            <dt>Models</dt>
+            <dd><code>User</code>, <code>Movie</code>, <code>Review</code>, <code>Order</code>, <code>Item</code></dd>
+          </div>
+          <div>
+            <dt>Deployment</dt>
+            <dd><a href="https://jaeoh91.pythonanywhere.com" target="_blank" rel="noopener">PythonAnywhere</a></dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="row" id="live">
+      <div class="rail"><h2>Try it</h2></div>
+      <div class="content">
+        <a class="mark-field" href="https://jaeoh91.pythonanywhere.com" target="_blank" rel="noopener">
+          <span class="live">Running now</span>
+          <h3>jaeoh91.pythonanywhere.com</h3>
+          <p class="field-lede">
+            Sign up, add a film to your cart and check out. Every feature below is
+            live in the deployed app.
+          </p>
+          <span class="field-cta">Open the live app</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="row" id="screens">
+      <div class="rail">
+        <h2>Screens</h2>
+        <p>6 views</p>
+      </div>
+      <div class="content">
+        <div class="shots">
+
+          <div class="shot">
+            <img src="img/screenshot_home.jpg" alt="Home page with the store's hero banner"
+                 width="1376" height="768" loading="lazy" />
+            <h3>Home</h3>
+            <p>The landing page, and the route into every other section of the store.</p>
+          </div>
+
+          <div class="shot">
+            <img src="img/screenshot_movies.jpg" alt="Catalogue of films in a card grid"
+                 width="1376" height="768" loading="lazy" />
+            <h3>Catalogue and search</h3>
+            <p>Every film in a responsive grid, with a search box that filters by name.</p>
+          </div>
+
+          <div class="shot">
+            <img src="img/screenshot_detail.jpg" alt="A film's detail page showing reviews"
+                 width="1376" height="768" loading="lazy" />
+            <h3>Film detail and reviews</h3>
+            <p>Description, price and quantity. Signed-in users can write, edit and delete their own reviews.</p>
+          </div>
+
+          <div class="shot">
+            <img src="img/screenshot_cart.jpg" alt="Shopping cart listing selected films"
+                 width="1376" height="768" loading="lazy" />
+            <h3>Cart</h3>
+            <p>Held in the session, so it survives navigation. Clear it, or take it through to checkout.</p>
+          </div>
+
+          <div class="shot">
+            <img src="img/screenshot_login.jpg" alt="Login form"
+                 width="1376" height="768" loading="lazy" />
+            <h3>Accounts</h3>
+            <p>Sign-up, login and logout on Django's auth system, with validation errors shown inline.</p>
+          </div>
+
+          <div class="shot">
+            <img src="img/screenshot_orders.jpg" alt="Order history listing past purchases"
+                 width="1376" height="768" loading="lazy" />
+            <h3>Order history</h3>
+            <p>Past orders with date, total and an item breakdown linking back to each film.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="row" id="design">
+      <div class="rail"><h2>Design</h2></div>
+      <div class="content">
+        <div class="figures">
+          <figure>
+            <img src="img/architecture_diagram.png" alt="Diagram of the Django MVT architecture across the four apps"
+                 width="1642" height="1038" loading="lazy" />
+            <figcaption>
+              <strong>Architecture</strong>
+              How requests move through the 4 apps under Django's model–view–template split.
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="img/class_diagram.png" alt="Class diagram of the five models and their associations"
+                 width="1472" height="770" loading="lazy" />
+            <figcaption>
+              <strong>Class diagram</strong>
+              The 5 models and the associations between them, including the order-to-item relationship.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="row" id="process">
+      <div class="rail">
+        <h2>Build log</h2>
+        <p>4 sessions</p>
+      </div>
+      <div class="content">
+        <ol class="log">
+
+          <li>
+            <div class="log-n">1</div>
+            <div class="log-body">
+              <h3>Environment and foundations</h3>
+              <p class="log-date">1 September 2026</p>
+              <ul>
+                <li>Set up Python with <strong>uv</strong> and a virtual environment, chosen over system Python to keep versions from colliding with my other projects</li>
+                <li>Read through Django's project layout before writing anything</li>
+                <li>Initialised the repository and made the first commit</li>
+              </ul>
+            </div>
+          </li>
+
+          <li>
+            <div class="log-n">2</div>
+            <div class="log-body">
+              <h3>Model–view–template and the core pages</h3>
+              <p class="log-date">13 September 2026</p>
+              <ul>
+                <li>Worked through how Django splits a request across model, view and template</li>
+                <li>Built the <code>home</code> app with its landing and about routes</li>
+                <li>Wrote the base template so navigation and styling are shared everywhere</li>
+              </ul>
+            </div>
+          </li>
+
+          <li>
+            <div class="log-n">3</div>
+            <div class="log-body">
+              <h3>Models, migrations and auth</h3>
+              <p class="log-date">13 September 2026</p>
+              <ul>
+                <li>Added the <code>movies</code> app with the <code>Movie</code> and <code>Review</code> models</li>
+                <li>Learned the migration cycle: <code>makemigrations</code>, then <code>migrate</code></li>
+                <li>Wired up sign-up with <code>UserCreationForm</code> and styled its error states</li>
+              </ul>
+            </div>
+          </li>
+
+          <li>
+            <div class="log-n">4</div>
+            <div class="log-body">
+              <h3>Reviews, cart and checkout</h3>
+              <p class="log-date">13 September 2026</p>
+              <ul>
+                <li>Finished review editing and deletion, restricted to whoever wrote the review</li>
+                <li>Built the session cart with add, clear and quantity tracking</li>
+                <li>Took the cart through to order creation and a confirmation page</li>
+                <li>Deployed to PythonAnywhere with production settings</li>
+              </ul>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <section class="row" id="approach">
+      <div class="rail"><h2>Approach</h2></div>
+      <div class="content prose">
+        <p>
+          I built one feature per session and committed often, which meant a broken
+          experiment was never more than a few minutes of work to unwind. When
+          something didn't make sense — URL routing early on, then how to keep a cart
+          in the session — I went to the course textbook and Django's own
+          documentation rather than guessing, and recorded each session so I could
+          go back over the parts that hadn't landed yet.
+        </p>
+      </div>
+    </section>
+
+    <section class="row" id="demo">
+      <div class="rail"><h2>Demo</h2></div>
+      <div class="content">
+        <video class="video" controls preload="metadata" width="1920" height="1080">
+          <source src="img/demo_vid.mp4" type="video/mp4" />
+          Your browser can't play embedded video.
+          <a href="img/demo_vid.mp4">Download the demo</a> instead.
+        </video>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><strong>Jaesang Oh</strong></p>
+    <p>CS 2340, Objects &amp; Design</p>
+    <p>Georgia Institute of Technology, 2026</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

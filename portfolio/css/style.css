@@ -1,0 +1,573 @@
+/* ==========================================================================
+   Jaesang Oh — portfolio
+
+   Concept: spec sheet. The subject is a CS 2340 (Objects & Design) project
+   that ships real specification artifacts — a class diagram, an architecture
+   diagram, a session log — so the page is set like a technical document:
+   monochrome, hard-left, divided by hairlines, with a label rail per section.
+
+   Yellow is structural, not decorative: it marks the primary action, and
+   nothing else. On each page that is the hero's main button and the field
+   pointing at the same destination. It is only ever a background with black
+   text on it — never thin colored text, because #FFD400 on white is 1.43:1
+   and unreadable. Black on yellow is 14.7:1, and so is yellow on black.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+/* --------------------------------------------------------------------------
+   Tokens
+
+   The inline script in each <head> always resolves a concrete data-theme, so
+   only these two explicit states need defining — no third "system" branch.
+   -------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  --paper:    #FFFFFF;
+  --ink:      #000000;
+  --ink-60:   #5C5C5C;   /* 6.58:1 on paper */
+  --rule:     #E0E0E0;
+  --plate:    #F5F5F5;   /* quiet fill, e.g. behind diagrams */
+
+  --mark:     #FFD400;
+  --mark-ink: #000000;   /* text on yellow is always black, in both themes */
+
+  /* layout */
+  --rail:     9.5rem;
+  --gap:      2.5rem;
+  --measure:  64ch;
+  --wrap:     72rem;
+  --band:     clamp(3.25rem, 7vw, 6rem);
+
+  /* type scale — perfect fourth at the display end, tightening for text */
+  --t-display: clamp(3.25rem, 12vw, 8.5rem);
+  --t-h2:      clamp(1.75rem, 4.5vw, 3rem);
+  --t-h3:      1.3125rem;
+  --t-lede:    clamp(1.125rem, 2.2vw, 1.5rem);
+  --t-body:    1.0625rem;
+  --t-small:   0.9375rem;
+  --t-micro:   0.8125rem;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper:  #000000;
+  --ink:    #FFFFFF;
+  --ink-60: #A3A3A3;   /* 8.3:1 on paper */
+  --rule:   #2A2A2A;
+  --plate:  #121212;
+}
+
+/* Colour transitions are enabled by JS only after the first user toggle, so
+   the initial paint never animates. */
+.theme-anim,
+.theme-anim body,
+.theme-anim .topbar,
+.theme-anim .shot img,
+.theme-anim .btn {
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+html {
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Archivo, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis-weight: none;
+}
+
+/* The literal reading of "yellow highlight" — and the only place yellow
+   appears without being placed deliberately. */
+::selection { background: var(--mark); color: var(--mark-ink); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+code {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .875em;
+  font-weight: 500;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p { text-wrap: pretty; overflow-wrap: break-word; }
+
+a { color: inherit; }
+
+.wrap {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* --------------------------------------------------------------------------
+   Focus
+
+   A solid ink ring reads on paper in both themes. Inside the yellow field,
+   ink would be white-on-yellow in dark mode, so those force black.
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.mark-field :focus-visible,
+.mark-field:focus-visible {
+  outline-color: #000;
+}
+
+.skip-link {
+  position: fixed;
+  top: .75rem;
+  left: .75rem;
+  z-index: 100;
+  padding: .625rem 1rem;
+  background: var(--mark);
+  color: var(--mark-ink);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-250%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline-color: #000;
+}
+
+/* --------------------------------------------------------------------------
+   Top bar
+   -------------------------------------------------------------------------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+
+.topbar .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4rem;
+}
+
+.wordmark {
+  font-weight: 800;
+  font-size: 1.0625rem;
+  letter-spacing: -.02em;
+  text-decoration: none;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.topnav a {
+  font-size: var(--t-small);
+  text-decoration: none;
+  padding-block: .25rem;
+  border-bottom: 2px solid transparent;
+}
+
+.topnav a:hover { border-bottom-color: var(--ink); }
+
+/* Theme toggle — the half-filled disc rotates to show which way it flips. */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.theme-toggle:hover { border-color: var(--ink); }
+.theme-toggle svg { width: 1.125rem; height: 1.125rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-toggle svg { transition: transform .3s ease; }
+}
+
+[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.hero {
+  padding-block: clamp(3.5rem, 10vw, 8rem) var(--band);
+}
+
+.display {
+  font-size: var(--t-display);
+  font-weight: 900;
+  line-height: .88;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 48ch;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: var(--t-lede);
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: .8125rem 1.5rem;
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  touch-action: manipulation;
+}
+
+/* The primary action on each page carries the mark. Same rule as the field
+   below: yellow means "this is the thing to click". */
+.btn-solid {
+  background: var(--mark);
+  border-color: var(--mark);
+  color: var(--mark-ink);
+}
+
+.btn-solid:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn-solid:focus-visible { outline-color: var(--ink); }
+.btn-line:hover  { background: var(--ink); color: var(--paper); }
+
+/* --------------------------------------------------------------------------
+   Rows — label rail + content, the spec-sheet device
+   -------------------------------------------------------------------------- */
+.row {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: var(--gap);
+  padding-block: var(--band);
+  border-top: 1px solid var(--rule);
+}
+
+.rail {
+  font-size: var(--t-small);
+  font-weight: 600;
+}
+
+.rail p {
+  margin-top: .25rem;
+  color: var(--ink-60);
+  font-size: var(--t-micro);
+  font-weight: 400;
+}
+
+.content > * + * { margin-top: 1.25rem; }
+
+.prose p {
+  max-width: var(--measure);
+  color: var(--ink-60);
+}
+
+.prose strong { color: var(--ink); font-weight: 600; }
+
+.prose a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+h2.section-head {
+  font-size: var(--t-h2);
+  letter-spacing: -.03em;
+  max-width: 20ch;
+}
+
+/* --------------------------------------------------------------------------
+   The yellow field — one per page, marking what to click
+   -------------------------------------------------------------------------- */
+.mark-field {
+  display: block;
+  background: var(--mark);
+  color: var(--mark-ink);
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  text-decoration: none;
+}
+
+.mark-field h3 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 900;
+  letter-spacing: -.035em;
+  overflow-wrap: anywhere;   /* headings here can be a bare URL */
+}
+
+.mark-field .field-lede {
+  max-width: 52ch;
+  margin-top: .75rem;
+  font-size: var(--t-body);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 1.5rem;
+  list-style: none;
+}
+
+.tags li {
+  padding: .3125rem .75rem;
+  border: 1px solid var(--mark-ink);
+  font-size: var(--t-micro);
+  font-weight: 600;
+}
+
+.field-shot {
+  margin-top: 1.75rem;
+  border: 1px solid var(--mark-ink);
+}
+
+.field-cta {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-weight: 700;
+  border-bottom: 3px solid var(--mark-ink);
+  padding-bottom: .125rem;
+}
+
+/* Live marker, used in the project page's yellow banner */
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: var(--t-micro);
+  font-weight: 700;
+}
+
+.live::before {
+  content: '';
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: var(--mark-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Specs list
+   -------------------------------------------------------------------------- */
+.specs { max-width: var(--measure); }
+
+.specs > div {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: 1rem;
+  padding-block: .75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.specs dt { color: var(--ink-60); font-size: var(--t-small); }
+.specs dd { font-size: var(--t-small); font-weight: 500; }
+
+.specs a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Screens — plain grid, no card chrome
+   -------------------------------------------------------------------------- */
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 2.5rem 2rem;
+}
+
+.shot img { border: 1px solid var(--rule); }
+
+.shot h3 {
+  margin-top: .875rem;
+  font-size: var(--t-h3);
+  font-weight: 700;
+}
+
+.shot p {
+  margin-top: .375rem;
+  color: var(--ink-60);
+  font-size: var(--t-small);
+}
+
+/* --------------------------------------------------------------------------
+   Diagrams — kept on a white plate in both themes, since the source PNGs
+   are line art on white and would otherwise float on a black page.
+   -------------------------------------------------------------------------- */
+.figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 2rem;
+}
+
+.figures figure { border: 1px solid var(--rule); }
+
+.figures img {
+  background: #FFFFFF;
+  padding: 1.25rem;
+}
+
+.figures figcaption {
+  padding: .875rem 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-small);
+  color: var(--ink-60);
+}
+
+.figures figcaption strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Build log — numbered because the content genuinely is a sequence
+   -------------------------------------------------------------------------- */
+.log { list-style: none; }
+
+.log > li {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-block: 2rem;
+  border-top: 1px solid var(--rule);
+}
+
+.log > li:first-child { border-top: 0; padding-top: 0; }
+
+.log-n {
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.05em;
+  color: var(--ink-60);
+  font-variant-numeric: tabular-nums;
+}
+
+.log-body h3 { font-size: var(--t-h3); font-weight: 700; }
+
+.log-date {
+  margin-top: .25rem;
+  color: var(--ink-60);
+  font-size: var(--t-micro);
+}
+
+.log-body ul {
+  margin-top: .875rem;
+  padding-left: 1.125rem;
+  max-width: var(--measure);
+}
+
+.log-body li {
+  margin-top: .375rem;
+  color: var(--ink-60);
+  font-size: var(--t-small);
+}
+
+.log-body li::marker { color: var(--ink); }
+.log-body strong { color: var(--ink); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   Video
+   -------------------------------------------------------------------------- */
+.video {
+  display: block;
+  width: 100%;
+  max-width: 60rem;
+  background: #000;
+  border: 1px solid var(--rule);
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.footer {
+  border-top: 1px solid var(--rule);
+  padding-block: 2.5rem;
+}
+
+.footer .wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  font-size: var(--t-micro);
+  color: var(--ink-60);
+}
+
+.footer strong { color: var(--ink); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   Responsive — rail folds above content
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  :root { --gap: 1rem; }
+
+  .row { grid-template-columns: 1fr; }
+
+  .rail {
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+    color: var(--ink-60);
+  }
+
+  .rail p { margin-top: 0; }
+
+  .specs > div { grid-template-columns: 1fr; gap: .125rem; }
+
+  .log > li { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
+  .log-n { font-size: 1.5rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
